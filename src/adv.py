@@ -1,5 +1,6 @@
 from player import Player
 from room import Room
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -40,6 +41,7 @@ room['treasure'].s_to = room['narrow']
 # Make a new player object that is currently in the 'outside' room.
 
 player = Player("Jon", room['outside'])
+player.inventory.append(Item("Fork", "Used to eat"))
 
 # Write a loop that:
 #
@@ -53,11 +55,14 @@ player = Player("Jon", room['outside'])
 # If the user enters "q", quit the game.
 
 while True:
-    print("\n\n")
+    print("\n")
     print(player.current_room.name)
     print(player.current_room.description)
-    print("\n\n")
-    direction = input("Enter a direction to move: ")
+    print("Item's")
+    for item in player.current_room.items:
+        print(item.name)
+    direction = input("Enter a command: ")
+    print("\n")
 
 
 
@@ -85,6 +90,11 @@ while True:
                 player.current_room = player.current_room.e_to
             else:
                 print("There is no room to the West!")
+        elif direction == "i":
+            print(f"{player.name}'s inventory: ")
+            for item in player.inventory:
+                print(item.name)
+            print("\n")
     except:
         print("Enter a value")
 
