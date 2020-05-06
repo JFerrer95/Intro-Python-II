@@ -1,5 +1,6 @@
+from player import Player
 from room import Room
-
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -33,11 +34,19 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
+sword = Item("sword", "Used to kill")
+spoon = Item("spoon", "Used to eat")
+
+room['foyer'].items = [sword]
+room['narrow'].items = [spoon]
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+
+player = Player("Jon", room['outside'])
 
 # Write a loop that:
 #
@@ -49,3 +58,68 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+while True:
+    print("\n")
+    print(player.current_room.name)
+    print(player.current_room.description)
+    print("Items:")
+    for item in player.current_room.items:
+        print(item.name)
+    direction = input("Enter a command: ").split(" ")
+
+
+    if len(direction) == 2:
+        if direction[0] == "get":
+                for item in player.current_room.items:
+                    if item.name == direction[1]:
+                        player.inventory.append(item)
+                        player.current_room.items.remove(item)
+                        name = player.name
+                        item.on_take(name)
+                    else:
+                        print(f'There is no item named"{direction[1]}"')
+    if direction[0] == "drop":
+                for item in player.inventory:
+                    if item.name == direction[1]:
+                        player.current_room.items.append(item)
+                        player.inventory.remove(item)
+                        name = player.name
+                        item.on_drop(name)
+                    else:
+                        print(f'There is no item named"{direction[1]}"')
+                    
+    elif len(direction) == 1:
+        try:
+            if direction[0] == 'q':
+                break
+            elif direction[0] == 'n':
+                if player.current_room.s_to:
+                    player.current_room = player.current_room.s_to
+                else:
+                    print("\n There is no room to the North!")
+            elif direction[0] == 's':
+                if player.current_room.n_to:
+                    player.current_room = player.current_room.n_to
+                else:
+                    print("There is no room to the South!")
+            elif direction[0] == 'e':
+                if player.current_room.w_to:
+                    player.current_room = player.current_room.w_to
+                else:
+                    print("There is no room to the East!")
+            elif direction[0] == 'w':
+                if player.current_room.e_to:
+                    player.current_room = player.current_room.e_to
+                else:
+                    print("There is no room to the West!")
+            elif direction[0] == "i":
+                print(f"{player.name}'s inventory: ")
+                for item in player.inventory:
+                    print(item.name)
+                print("\n")
+        except:
+            print("Enter a value")
+
+
+print("Thanks for playing")
