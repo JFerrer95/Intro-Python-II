@@ -42,10 +42,25 @@ room['treasure'].s_to = room['narrow']
 player = Player("Jon", room['outside'])
 
 # Write a loop that:
+#
+# * Prints the current room name
+# * Prints the current description (the textwrap module might be useful here).
+# * Waits for user input and decides what to do.
+#
+# If the user enters a cardinal direction, attempt to move to the room there.
+# Print an error message if the movement isn't allowed.
+#
+# If the user enters "q", quit the game.
+
 while True:
+    print("\n\n")
     print(player.current_room.name)
     print(player.current_room.description)
+    print("\n\n")
     direction = input("Enter a direction to move: ")
+
+
+
 
     try:
         if direction == 'q':
@@ -54,7 +69,7 @@ while True:
             if player.current_room.s_to:
                 player.current_room = player.current_room.s_to
             else:
-                print("There is no room to the North! \n\n")
+                print("\n There is no room to the North!")
         elif direction == 's':
             if player.current_room.n_to:
                 player.current_room = player.current_room.n_to
@@ -75,12 +90,3 @@ while True:
 
 
 print("Thanks for playing")
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
