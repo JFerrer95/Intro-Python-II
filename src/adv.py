@@ -34,8 +34,12 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-room['outside'].items.append(Item("sword", "used to attack enemy's"))
 
+sword = Item("sword", "Used to kill")
+spoon = Item("spoon", "Used to eat")
+
+room['foyer'].items = [sword]
+room['narrow'].items = [spoon]
 #
 # Main
 #
@@ -71,7 +75,17 @@ while True:
                     if item.name == direction[1]:
                         player.inventory.append(item)
                         player.current_room.items.remove(item)
-                        print(f'Player picked up {item.name}')
+                        name = player.name
+                        item.on_take(name)
+                    else:
+                        print(f'There is no item named"{direction[1]}"')
+    if direction[0] == "drop":
+                for item in player.inventory:
+                    if item.name == direction[1]:
+                        player.current_room.items.append(item)
+                        player.inventory.remove(item)
+                        name = player.name
+                        item.on_drop(name)
                     else:
                         print(f'There is no item named"{direction[1]}"')
                     
